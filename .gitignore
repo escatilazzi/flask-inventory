@@ -1,0 +1,6 @@
+__pycache__/
+_pycache__/*
+venv/
+*env
+src/static/images/
+src/static/images/*
