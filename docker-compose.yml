@@ -11,7 +11,7 @@ services:
     environment:
       FLASK_APP: src/app:create_app
       FLASK_ENV: development
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/flask_psychology
+      DATABASE_URL: postgresql://postgres:Nueva123@db:5432/flask_psychology
     depends_on:
       - db
 

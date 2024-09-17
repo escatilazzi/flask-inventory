@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Medical Software</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 56px;
+        }
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background-color: #343a40;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            padding: 10px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #fff;
+            display: block;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+            color: white;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <a href="#patients">Pacientes</a>
+        <a href="#clinical-history">Historial Clínico</a>
+        <a href="#medical-studies">Estudios Médicos</a>
+        <a href="#certifications">Certificaciones</a>
+        <a href="#referrals">Derivaciones</a>
+        <a href="#payments">Pagos</a>
+        <a href="{{ url_for('auth.logout') }}" class="text-danger">Logout</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="container-fluid">
+            <p>Bienvenido, {{ session['name'] }} {{ session['lastname'] }}!</p>
+
+            <!-- Pacientes Section -->
+            <section id="patients">
+                <h2>Pacientes</h2>
+                <p>Aquí podrás gestionar la información de los pacientes.</p>
+                <!-- Añade aquí las tablas o formularios para gestionar los pacientes -->
+            </section>
+
+            <hr>
+
+            <!-- Historial Clínico Section -->
+            <section id="clinical-history">
+                <h2>Historial Clínico</h2>
+                <p>Accede a la historia clínica de los pacientes.</p>
+                <!-- Añade tablas, detalles o formularios para historial clínico -->
+            </section>
+
+            <hr>
+
+            <!-- Estudios Médicos Section -->
+            <section id="medical-studies">
+                <h2>Estudios Médicos</h2>
+                <p>Consulta y solicita estudios médicos para los pacientes.</p>
+                <!-- Aquí puedes mostrar estudios médicos solicitados o pendientes -->
+            </section>
+
+            <hr>
+
+            <!-- Certificaciones Section -->
+            <section id="certifications">
+                <h2>Certificaciones</h2>
+                <p>Genera y gestiona las certificaciones médicas.</p>
+                <!-- Espacio para gestionar certificados médicos -->
+            </section>
+
+            <hr>
+
+            <!-- Derivaciones Section -->
+            <section id="referrals">
+                <h2>Derivaciones</h2>
+                <p>Gestiona las derivaciones a otros profesionales de la salud.</p>
+                <!-- Área para gestionar derivaciones médicas -->
+            </section>
+
+            <hr>
+
+            <!-- Pagos Section -->
+            <section id="payments">
+                <h2>Pagos</h2>
+                <p>Revisa los pagos realizados por los pacientes.</p>
+                <!-- Sección para gestionar y ver detalles de los pagos -->
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
