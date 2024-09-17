@@ -48,7 +48,7 @@ def delete(id):
     flash('Patient deleted successfully!', 'success')
     return redirect(url_for('patient.delete'))
 
-@patient_bp.route('/patients/<int:id>', methods=['GET'])
+@patient_bp.route('/patients', methods=['GET'])
 def get_all():
     patients = Patient.query.all()
     return render_template('/patients', patients=patients)

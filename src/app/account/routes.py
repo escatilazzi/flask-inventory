@@ -1,10 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from ..models import db, User
 
-auth_blueprint = Blueprint('auth', __name__)
+auth_bp = Blueprint('auth', __name__)
 
 
-@auth_blueprint.route('/register', methods=['GET', 'POST'])
+@auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         name = request.form['name']
@@ -24,7 +24,7 @@ def register():
     
     return render_template('register.html')
 
-@auth_blueprint.route('/login', methods=['GET', 'POST'])
+@auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email=request.form['email']
@@ -42,7 +42,7 @@ def login():
 
     return render_template('login.html')
 
-@auth_blueprint.route('/logout')
+@auth_bp.route('/logout')
 def logout():
     session.pop('email', None)
     session.pop('name', None)

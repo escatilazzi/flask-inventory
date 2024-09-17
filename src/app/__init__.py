@@ -1,7 +1,8 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from .models import db
-from .account.routes import auth_blueprint
+from .account.routes import auth_bp
+from .patient.routes import patient_bp
 
 def create_app():
     app = Flask(__name__)
@@ -10,7 +11,8 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
-    app.register_blueprint(auth_blueprint)
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(patient_bp)
 
     with app.app_context():
         db.create_all()

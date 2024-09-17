@@ -25,4 +25,4 @@ ENV FLASK_ENV=development
 EXPOSE 5000
 
 # Comando para iniciar la aplicación Flask
-CMD ["flask", "run", "--host=0.0.0.0", "--debug"]
+CMD ["flask", "run", "--host=0.0.0.0", "--debug", "--reload"]
