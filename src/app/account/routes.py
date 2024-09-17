@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from .models import db, User
+from ..models import db, User
 
 auth_blueprint = Blueprint('auth', __name__)
 
@@ -10,10 +10,10 @@ def register():
         name = request.form['name']
         lastname = request.form['lastname']
         email = request.form['email']
-        registration = request.form['registration']
+        matricula = request.form['matricula']
         password = request.form['password']
         
-        user = User(name=name, lastname=lastname, email=email, registration=registration)
+        user = User(name=name, lastname=lastname, email=email, matricula=matricula)
         user.set_password(password)
         
         db.session.add(user)
@@ -27,24 +27,25 @@ def register():
 @auth_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        email=request.form['email']
+        password=request.form['password']
 
-        user = User.query.filter_by(username=username).first()
-
+        user = User.query.filter_by(email=email).first()
+        
         if user and user.check_password(password):
-            session['user_id'] = user.id
-            session['role'] = user.role
-            flash('Login successful!', 'success')
-            return redirect(url_for('home'))  # Redirect to the main page of the application
+            session['email'] = user.email
+            session['name'] = user.name
+            session['lastname'] = user.lastname
+            return redirect(url_for('dashboard'))
+        else:
+            return 'Invalid password', 401  # Si la contraseña es incorrecta
 
-        flash('Invalid credentials', 'danger')
-    
     return render_template('login.html')
 
 @auth_blueprint.route('/logout')
 def logout():
-    session.pop('user_id', None)
-    session.pop('role', None)
+    session.pop('email', None)
+    session.pop('name', None)
+    session.pop('lastname', None)
     flash('You have been logged out.', 'info')
     return redirect(url_for('auth.login'))
