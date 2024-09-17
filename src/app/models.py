@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 db = SQLAlchemy()
 
 class User(db.Model):
+    __tablename__='users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100),nullable=False)
     lastname = db.Column(db.String(100), nullable=False)
@@ -17,3 +18,12 @@ class User(db.Model):
     def check_password(self,password):
         return check_password_hash(self.password_hash,password)
     
+class Patient(db.Model):
+    __tablename__= 'patients'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100),nullable=False)
+    lastname = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(150), unique=True, nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    country = db.Column(db.String(120))
+    is_active = db.Column(db.String(3), nullable=False)
