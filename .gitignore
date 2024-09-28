@@ -4,3 +4,4 @@ venv/
 *env
 src/static/images/
 src/static/images/*
+*venv/
