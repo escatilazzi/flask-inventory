@@ -55,4 +55,18 @@ def manage_patients():
     patients = Patient.query.all()
     return render_template('patients.html', patients=patients)
 
-
+@patient_bp.route('/patients/search', methods=['GET'])
+def search_patients():
+    query = request.args.get('query') 
+    
+    if query:
+        patients = Patient.query.filter(
+            (Patient.name.ilike(f'%{query}%')) |
+            (Patient.lastname.ilike(f'%{query}%')) |
+            (Patient.number.ilike(f'%{query}%')) |
+            (Patient.email.ilike(f'%{query}%'))
+        ).all()
+    else:
+        patients = Patient.query.all()
+    
+    return render_template('patients.html', patients=patients)
