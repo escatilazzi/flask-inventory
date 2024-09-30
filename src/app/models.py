@@ -24,6 +24,8 @@ class Patient(db.Model):
     name = db.Column(db.String(100),nullable=False)
     lastname = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
+    number= db.Column(db.String(15), nullable=False)
     age = db.Column(db.Integer, nullable=False)
     country = db.Column(db.String(120))
     is_active = db.Column(db.String(3), nullable=False)
+    
