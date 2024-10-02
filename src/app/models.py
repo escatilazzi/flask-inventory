@@ -1,5 +1,8 @@
+import datetime
+from flask import current_app 
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from itsdangerous import Serializer
 
 db = SQLAlchemy()
 
@@ -18,6 +21,19 @@ class User(db.Model):
     def check_password(self,password):
         return check_password_hash(self.password_hash,password)
     
+    def get_reset_token(self):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        return s.dumps({'user_id': self.id})
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
+    
 class Patient(db.Model):
     __tablename__= 'patients'
     id = db.Column(db.Integer, primary_key=True)
@@ -28,4 +44,5 @@ class Patient(db.Model):
     age = db.Column(db.Integer, nullable=False)
     country = db.Column(db.String(120))
     is_active = db.Column(db.String(3), nullable=False)
+    created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=True)
     
