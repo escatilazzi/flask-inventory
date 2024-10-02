@@ -1,6 +1,12 @@
 version: '3.8'
 
 services:
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"  # Interfaz web de MailHog
+      - "1025:1025"  # Puerto SMTP
+
   web:
     build: .
     command: flask run --host=0.0.0.0 --debug
@@ -11,7 +17,16 @@ services:
     environment:
       FLASK_APP: src/app:create_app
       FLASK_ENV: development
+      SECRET_KEY: Psicologia
       DATABASE_URL: postgresql://postgres:Nueva123@db:5432/flask_psychology
+      MAIL_SERVER: mailhog         # Usar MailHog como servidor de correo
+      MAIL_PORT: 1025              # Puerto SMTP de MailHog
+      MAIL_USE_TLS: 'false'        # TLS desactivado
+      MAIL_USE_SSL: 'false'        # SSL desactivado
+      MAIL_USERNAME: ''            # No es necesario un usuario
+      MAIL_PASSWORD: ''            # No es necesario una contraseña
+      MAIL_DEFAULT_SENDER: 'noreply@yourapp.com'  # Dirección de envío por defecto
+
     depends_on:
       - db
 

@@ -36,6 +36,29 @@
                         <button type="submit" class="btn btn-primary">Login</button>
                     </div>
                 </form>
+                <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
+                    ¿Olvidaste tu contraseña?
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="forgotPasswordModalLabel">Restablecer Contraseña</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        <form id="forgotPasswordForm" method="POST" action="{{ url_for('auth.reset_password_request') }}">
+                            <div class="mb-3">
+                            <label for="email" class="form-label">Ingresa tu correo electrónico</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Enviar enlace de restablecimiento</button>
+                        </form>
+                        </div>
+                    </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
