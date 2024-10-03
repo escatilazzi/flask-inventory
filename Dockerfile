@@ -20,7 +20,7 @@ COPY . .
 # Defino las variables de entorno Flask
 ENV FLASK_APP=src.app:create_app
 ENV FLASK_ENV=development
-
+ENV SECRET_KEY=Psicologia
 # Exponer el puerto 5000 para que Flask esté disponible
 EXPOSE 5000
 
