@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from ..models import db, Patient
+from ..models import db, Patient, SocialSecurity
 
 patient_bp = Blueprint('patient', __name__)
 
@@ -19,6 +19,7 @@ def manage_patients():
 
     if request.method == 'POST':
         # Crear nuevo paciente
+        user_id = session['id'] 
         if 'create' in request.form:
             name = request.form['name']
             lastname = request.form['lastname']
@@ -26,8 +27,8 @@ def manage_patients():
             number = request.form['number']
             email = request.form['email']
             country = request.form['country']
-            
-            new_patient = Patient(name=name, lastname=lastname, age=age, number=number, email=email, country=country, is_active='yes')
+            social_id = request.form['social_id']            
+            new_patient = Patient(name=name, lastname=lastname, age=age, number=number, email=email, country=country, social_id=social_id, is_active='yes', user_id=user_id )
             db.session.add(new_patient)
             db.session.commit()
             flash('Paciente creado exitosamente!', 'success')
@@ -41,6 +42,8 @@ def manage_patients():
             patient.number = request.form['number']
             patient.email = request.form['email']
             patient.country = request.form['country']
+            patient.social_id = request.form['social_id']
+            patient.is_active = request.form['is_active']
             db.session.commit()
             flash('Paciente actualizado exitosamente!', 'success')
 
@@ -52,8 +55,11 @@ def manage_patients():
             flash('Paciente eliminado exitosamente!', 'success')
     
     # Obtener lista de pacientes
-    patients = Patient.query.all()
-    return render_template('patients.html', patients=patients)
+    user_id = session['id']
+    #patients = Patient.query.filter_by(user_id=user_id).all()
+    patients = db.session.query(Patient.name, Patient.lastname, Patient.number, SocialSecurity.name.label('social_name')).join(SocialSecurity).all()
+    socials = SocialSecurity.query.all()
+    return render_template('patients.html', patients=patients, socials=socials)
 
 @patient_bp.route('/patients/search', methods=['GET'])
 def search_patients():
@@ -66,7 +72,5 @@ def search_patients():
             (Patient.number.ilike(f'%{query}%')) |
             (Patient.email.ilike(f'%{query}%'))
         ).all()
-    else:
-        patients = Patient.query.all()
-    
+
     return render_template('patients.html', patients=patients)

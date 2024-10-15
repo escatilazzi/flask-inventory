@@ -81,7 +81,10 @@
                     <a class="nav-link" href="{{ url_for('patient.manage_patients') }}">Pacientes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#clinical-history">Historial Clínico</a>
+                    <a class="nav-link" href="{{ url_for('appointment.appointments') }}">Turnos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('medsession.medrecord') }}">Historial Clínico</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#medical-studies">Estudios Médicos</a>
@@ -94,6 +97,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#payments">Pagos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('socialsecurity.get_all')}}">Obra Sociales y Prepagas</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-danger" href="{{ url_for('auth.logout') }}">Logout</a>

@@ -14,7 +14,12 @@ class User(db.Model):
     email = db.Column(db.String(150), unique=True, nullable=False)
     matricula = db.Column(db.Integer, unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
-    
+    # Relación con la tabla de sesiones
+    sessions = db.relationship('Session', backref='user', lazy=True)
+    # Relación con los pacientes (si un psicólogo maneja múltiples pacientes)
+    patients = db.relationship('Patient', backref='assigned_psychologist', lazy=True)
+
+
     def set_password(self,password):
         self.password_hash = generate_password_hash(password)
 
@@ -43,6 +48,47 @@ class Patient(db.Model):
     number= db.Column(db.String(15), nullable=False)
     age = db.Column(db.Integer, nullable=False)
     country = db.Column(db.String(120))
+    social_security = db.Column(db.Integer, )
     is_active = db.Column(db.String(3), nullable=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=True)
-    
+    # Clave foránea hacia User
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    #Clave foranea hacia SocialSecurity
+    social_id = db.Column(db.Integer, db.ForeignKey('socialsecurities.id'))
+    # Relación con las sesiones
+    sessions = db.relationship('Session', backref='patient', lazy=True)
+
+
+class Session(db.Model):
+    __tablename__= 'sessions'
+    id = db.Column(db.Integer, primary_key=True)
+    session_note = db.Column(db.Text, nullable=False)
+    session_date = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=True)
+    session_type = db.Column(db.String(2000), nullable=False)
+    assist = db.Column(db.String(3), nullable=False)
+    pay = db.Column(db.String(3), default='NULL')
+    # Claves foráneas
+    patient_id = db.Column(db.Integer, db.ForeignKey('patients.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'))
+
+
+
+class SocialSecurity(db.Model):
+    __tablename__='socialsecurities'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(400), nullable=False)
+    patients = db.relationship('Patient', backref='assigned_socialsecurity', lazy=True)
+
+
+class Appointment(db.Model):
+    __tablename__='appointments'
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patients.id'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    time = db.Column(db.Time, nullable=False)
+    status = db.Column(db.String(50), nullable=False, default="Scheduled")
+    recurrence_type = db.Column(db.String(30), nullable=False, default="Weekly")
+    recurrence_interval = db.Column(db.Integer, nullable=True)
+    recurrence_end = db.Column(db.Date, nullable=True)
+    patient = db.relationship('Patient', backref='appointments')
