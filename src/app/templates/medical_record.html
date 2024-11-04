@@ -22,6 +22,66 @@
 <div class="container mt-5">
     <h1>Historia Clínica</h1>
 
+    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSessionModal">Crear sesion</a>
+    <div class="modal fade" id="createSessionModal" tabindex="-1" aria-labelledby="createSessionLabel" aria-hidden="true">
+        <div class="modal-dialog">up
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createSessionLabel">Nuevo Paciente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="{{ url_for('medsession.create') }}">
+                    <input type="hidden" name="create" value="1">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastname" class="form-label">Apellido</label>
+                            <input type="text" class="form-control" id="lastname" name="lastname" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="number" class="form-label">Número de Teléfono</label>
+                            <input type="text" class="form-control" id="number" name="number" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="age" class="form-label">Edad</label>
+                            <input type="number" class="form-control" id="age" name="age" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="country" class="form-label">País</label>
+                            <input type="text" class="form-control" id="country" name="country" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="social_id" class="form-label">Obra Social</label>
+                            <select class="form-select" id="social_id" name="social_id" required>
+                                <option value="">Seleccionar Obra Social</option>
+                                {% for social in socials %}
+                                    <option value="{{ social.id }}">{{ social.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="is_active" class="form-label">Asistio?</label>
+                            <select class="form-select" id="is_active" name="is_active" required>
+                                <option value="yes">Sí</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Guardar Sesion</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <table class="table table-striped table-hover">
         <thead>
             <tr>

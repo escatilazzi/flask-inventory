@@ -17,7 +17,17 @@ def manage_session():
     if request.method == 'POST':
         if 'create' in request.form:
             session_note = request.form['session_note']
-        return redirect(url_for('med_bp.medical_record'))
+            session_date = request.form['session_date']
+            session_type = request.form['session_type']
+            assist = request.form['assit']
+            pay = request.form['pay']
+            patient_id = request.form['patient_id']
+            user_id = request.form['user_id']
+            appointment_id = request.form['appointment_id']
+
+            db.session.add(session_note=session_note,session_date=session_date,session_type=session_type,assist=assist,pay=pay,patient_id=patient_id,user_id=user_id,appointment_id=appointment_id)
+            db.session.commit
+        return redirect(url_for('medsession.medical_record'))
             
 @medsession_bp.route('/upload', methods =['GET','POST'])
 def upload_file():
@@ -37,5 +47,5 @@ def upload_file():
 @medsession_bp.route('/medrecord', methods =['GET','POST'])
 def medrecord():
     user_id = session['id'] 
-    sess_patient = db.session.query(Session.session_date, Session.assist, Session.pay, Patient.name, Patient.lastname  ).join(Patient).filter(User.id == user_id).all()
+    sess_patient = db.session.query(Session.session_note, Session.assist, Session.pay, Patient.name, Patient.lastname  ).join(Patient).filter(User.id == user_id).all()
     return render_template('medical_record.html', sess_patient=sess_patient)
