@@ -51,18 +51,17 @@
                     <td>{{ patient.name }}</td>
                     <td>{{ patient.lastname }}</td>
                     <td>{{ patient.number }}</td>
-                    <td>{{ patient.social_name}}</td>
+                    <td>{{ patient.social.name if patient.social else 'Sin obra social' }}</td>
                     <td>
                         <!-- Botón de editar -->
                         <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updatePatientModal{{ patient.id }}">Editar</button>
                         
                         <!-- Formulario para eliminar -->
-                        <form action="{{ url_for('patient.manage_patients') }}" method="POST" style="display:inline;">
-                            <input type="hidden" name="delete" value="1">
-                            <input type="hidden" name="patient_id" value="{{ patient.id }}">
+                        <form action="{{ url_for('patient.delete', id=patient.id) }}" method="POST" style="display:inline;">
                             <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('¿Estás seguro de eliminar este paciente?')">Eliminar</button>
                         </form>
-                        
+                        <a href="{{ url_for('patient.patients_history', id=patient.id) }}" class="btn btn-sm btn-info">Ver Historial</a>
+                        <a href="{{ url_for('patient.patients_session', id=patient.id) }}" class="btn btn-sm btn-success">Crear Sesion</a>
                         <!-- Modal para actualizar paciente -->
                         <div class="modal fade" id="updatePatientModal{{ patient.id }}" tabindex="-1" aria-labelledby="updatePatientLabel{{ patient.id }}" aria-hidden="true">
                             <div class="modal-dialog">
@@ -71,10 +70,9 @@
                                         <h5 class="modal-title" id="updatePatientLabel{{ patient.id }}">Actualizar Paciente</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <form method="POST" action="{{ url_for('patient.manage_patients') }}">
+                                    <form method="POST" action="{{ url_for('patient.edit', id=patient.id) }}">
                                         <div class="modal-body">
-                                            <input type="hidden" name="update" value="1">
-                                            <input type="hidden" name="patient_id" value="{{ patient.id }}">
+                                            <input type="hidden" name="id" value="{{ patient.id }}">
                                             <div class="mb-3">
                                                 <label for="name" class="form-label">Nombre</label>
                                                 <input type="text" class="form-control" name="name" value="{{ patient.name }}" required>
@@ -140,8 +138,7 @@
                 <h5 class="modal-title" id="createPatientLabel">Nuevo Paciente</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="POST" action="{{ url_for('patient.manage_patients') }}">
-                <input type="hidden" name="create" value="1">
+            <form method="POST" action="{{ url_for('patient.create') }}">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="name" class="form-label">Nombre</label>

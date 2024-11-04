@@ -48,15 +48,13 @@ class Patient(db.Model):
     number= db.Column(db.String(15), nullable=False)
     age = db.Column(db.Integer, nullable=False)
     country = db.Column(db.String(120))
-    social_security = db.Column(db.Integer, )
     is_active = db.Column(db.String(3), nullable=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=True)
-    # Clave foránea hacia User
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    #Clave foranea hacia SocialSecurity
     social_id = db.Column(db.Integer, db.ForeignKey('socialsecurities.id'))
-    # Relación con las sesiones
     sessions = db.relationship('Session', backref='patient', lazy=True)
+    social = db.relationship('SocialSecurity', backref='assigned_patients', uselist=False)
+
 
 
 class Session(db.Model):
@@ -65,8 +63,9 @@ class Session(db.Model):
     session_note = db.Column(db.Text, nullable=False)
     session_date = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=True)
     session_type = db.Column(db.String(2000), nullable=False)
-    assist = db.Column(db.String(3), nullable=False)
-    pay = db.Column(db.String(3), default='NULL')
+    assist = db.Column(db.String(6), nullable=False)
+    pay = db.Column(db.String(6), default='NULL')
+    session_file = db.Column(db.String(500), nullable=True)
     # Claves foráneas
     patient_id = db.Column(db.Integer, db.ForeignKey('patients.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
@@ -78,17 +77,16 @@ class SocialSecurity(db.Model):
     __tablename__='socialsecurities'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(400), nullable=False)
-    patients = db.relationship('Patient', backref='assigned_socialsecurity', lazy=True)
 
 
 class Appointment(db.Model):
-    __tablename__='appointments'
+    __tablename__ = 'appointments'
     id = db.Column(db.Integer, primary_key=True)
     patient_id = db.Column(db.Integer, db.ForeignKey('patients.id'), nullable=False)
     date = db.Column(db.Date, nullable=False)
     time = db.Column(db.Time, nullable=False)
-    status = db.Column(db.String(50), nullable=False, default="Scheduled")
-    recurrence_type = db.Column(db.String(30), nullable=False, default="Weekly")
+    recurrence_type = db.Column(db.String(30), nullable=False, default="Only")
     recurrence_interval = db.Column(db.Integer, nullable=True)
     recurrence_end = db.Column(db.Date, nullable=True)
+    recurrence_days = db.Column(db.String(20), nullable=True) 
     patient = db.relationship('Patient', backref='appointments')
